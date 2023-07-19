@@ -8,7 +8,7 @@ const usuarios = [
     senha: "teste1",
     recados: [
       {
-        identificador: 1,
+        id: 1,
         titulo: "Alo",
         descricao: "Bom dia",
       },
@@ -92,13 +92,16 @@ app.get("/login", function (req, res) {
     );
   } else {
     res.status(400);
-    res.send("Verifica os dados e tente novamente");
+    res.send("Verifique os dados e tente novamente");
   }
 });
 
 app.get("/recados", function (req, res) {
   if (valido) {
     for (const usuario of usuarios) {
+      for (let i = 0; i < usuario.recados.length; i++) {
+        usuario.recados[i].id = i;
+      }
       if (usuario.email == usuarioLogado.email) {
         usuarioLogado = usuario;
         if (usuarioLogado.recados.length == 0) {
@@ -119,39 +122,21 @@ app.post("/recados", function (req, res) {
     if (req.body.titulo == "" || req.body.descricao == "") {
       res.status(400).send("Preencha os campos corretamente");
     } else {
-      const recado = {
-        id: contadorRecados,
-        titulo: req.body.titulo,
-        descricao: req.body.descricao,
-      };
-
       for (const usuario of usuarios) {
         if (usuario.email == usuarioLogado.email) {
+          const recado = {
+            id: 0,
+            titulo: req.body.titulo,
+            descricao: req.body.descricao,
+          };
           usuario.recados.push(recado);
-          res.status(200).send("Recados registrado");
           contadorRecados++;
+          res.status(200).send("Recados registrado");
         }
       }
     }
   } else {
     res.status(400).send("É necessário fazer um login para criar recados");
-  }
-});
-
-app.delete("/recados", function (req, res) {
-  if (valido) {
-    let id = req.body.id;
-
-    for (const usuario of usuarios) {
-      if (usuario.email == usuarioLogado.email) {
-        usuario.recados.splice(id - 1, 1);
-        console.log(usuario.recados);
-      }
-    }
-    //TERMINAR DE EDITAR
-    res.send("Recado deletado com sucesso");
-  } else {
-    res.status(400).send("É necessário fazer um login para deletar recado");
   }
 });
 
@@ -163,24 +148,47 @@ app.put("/recados", function (req, res) {
       req.body.descricao == ""
     ) {
       res.status(400).send("Preencha os campos corretamente");
-    }
-    for (const usuario of usuarios) {
-      if (usuario.email == usuarioLogado.email) {
-        if (usuario.identificador == req.body.id - 1) {
-          usuario.recados[req.body.id - 1].titulo = req.body.titulo;
-          usuario.recados[req.body.id - 1].descricao = req.body.descricao;
+    } else {
+      for (const usuario of usuarios) {
+        if (usuario.email == usuarioLogado.email) {
+          if (usuario.recados[req.body.id].id == req.body.id) {
+            usuario.recados[req.body.id].titulo = req.body.titulo;
+            usuario.recados[req.body.id].descricao = req.body.descricao;
+            usuarioLogado = usuario;
+            res.status(200).send("Recado atualizado com sucesso");
+            console.log(usuario.recados);
+          } else {
+            console.log(usuario.recados);
+            res.status(400).send("Não existe nenhum recado com o ID inserido.");
+          }
         }
-        usuarioLogado = usuario;
       }
     }
-    res.status(200).send("Recado atualizado com sucesso");
   } else {
     res.status(400).send("É necessário fazer login para atualizar um recado");
   }
 });
 
-// app.get("/listar-recados", function (req, res) {
-//   res.send("listar recados");
-// });
+app.delete("/recados", function (req, res) {
+  if (valido) {
+    let id = req.body.id;
 
-app.listen(3000, function () {});
+    for (const usuario of usuarios) {
+      if (
+        usuario.email == usuarioLogado.email &&
+        usuario.recados.length !== 0
+      ) {
+        usuario.recados.splice(id, 1);
+        res.status(200).send("Recado deletado com sucesso");
+      } else {
+        res.status(400).send("Usuário não tem recados registrados.");
+      }
+    }
+  } else {
+    res.status(400).send("É necessário fazer um login para deletar recado");
+  }
+});
+
+app.listen(3000, function () {
+  console.log("Aplicação rodando: http://localhost:3000/");
+});
