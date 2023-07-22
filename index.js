@@ -8,9 +8,19 @@ const usuarios = [
     senha: "teste1",
     recados: [
       {
-        id: 1,
+        id: 0,
         titulo: "Alo",
         descricao: "Bom dia",
+      },
+      {
+        id: 1,
+        titulo: "Oi",
+        descricao: "Boa tarde",
+      },
+      {
+        id: 3,
+        titulo: "Hi",
+        descricao: "Boa noite",
       },
     ],
   },
@@ -22,29 +32,69 @@ const usuarios = [
     recados: [],
   },
 ];
-let contador = 2;
-
-//A partir do login
-var contadorRecados = 2;
+var contador = 2;
 var usuarioLogado;
 var valido = false;
 
+function numerarRecados() {
+  for (const usuario of usuarios) {
+    for (let i = 0; i < usuario.recados.length; i++) {
+      usuario.recados[i].id = i;
+    }
+  }
+}
 const app = express();
 
 app.use(express.json());
 
 app.get("/", function (req, res) {
-  res.status(200);
-  res.send("Bem vindo ao app!");
+  res.status(200).send(`API CRUD de recados
+
+  ROTAS:
+  
+  "/" método GET - Exibe todos os usúarios cadastros e seus recados
+  
+  "/cadastro" método POST - Cria um usuário através do body
+  
+  Exemplo:{
+  "nome": "Fulano,
+  "email": "fulano@email.com,
+  "senha": "fulano123"
+  }
+  
+  "/login" método GET - Login na conta registrada através da requisicao body
+  
+  Exemplo:{
+  "email": "fulano@email.com",
+  "senha": "fulano123"
+  }
+  
+  "/recados" método GET - Exibe todos os recados que o úsuario logado tem
+  
+  "/recados" método POST - Registra um novo recado através da requisição body
+  
+  Exemplo:{
+  "titulo": "Titulo do recado",
+  "descricao": "Corpo do recado
+  }
+  
+  "/recados" método PUT - Atualiza um recado a partir do ID através da requisição body
+  
+  Exemplo:{
+  "id": 3, (o número da mensagem que você deseja alterar)
+  "titulo": "Titulo novo",
+  "descricao: "Novo corpo do recado"
+  }
+  
+  "/recados" método DELETE - Deleta um recado a partir do ID selecionado através da requisicao body
+  Exemplo:{
+  "id": 2 (número do recado que deseja apagar)
+  }
+  `);
 });
 
 app.post("/cadastro", function (req, res) {
   let mesmoEmail = false;
-
-  if (req.body.nome === "" || req.body.email === "" || req.body.senha === "") {
-    res.status(400);
-    res.send("Preencha corretamente os campos");
-  }
 
   const novoUsuario = {
     identificador: contador,
@@ -54,59 +104,63 @@ app.post("/cadastro", function (req, res) {
     recados: [],
   };
 
-  for (const usuario of usuarios) {
-    if (usuario.email === novoUsuario.email) {
-      mesmoEmail = true;
-    }
-  }
-
-  if (mesmoEmail) {
+  if (req.body.nome === "" || req.body.email === "" || req.body.senha === "") {
     res.status(400);
-    res.send("Este email já esta cadastrado");
+    res.send("Preencha corretamente os campos");
   } else {
-    res.status(200);
-    usuarios.push(novoUsuario);
-    res.send("Usuario cadastrado com sucesso");
-    contador++;
+    for (const usuario of usuarios) {
+      if (usuario.email === novoUsuario.email) {
+        mesmoEmail = true;
+      }
+    }
+
+    if (mesmoEmail) {
+      res.status(400);
+      res.send("Este email já esta cadastrado");
+    } else {
+      res.status(200);
+      usuarios.push(novoUsuario);
+      contador++;
+      res.send("Usuario cadastrado com sucesso");
+    }
   }
 });
 
 app.get("/login", function (req, res) {
+  if (req.body.email == undefined || req.body.senha == undefined) {
+    res.status(400).send("Preencha os campos corretamente.");
+  }
+
   const login = {
     email: req.body.email,
     senha: req.body.senha,
   };
 
   for (const usuario of usuarios) {
-    if (usuario.email === login.email && usuario.senha === login.senha) {
-      valido = true;
+    if (login.email == usuario.email && login.senha == usuario.senha) {
       usuarioLogado = usuario;
-      contadorRecados = 0;
+      valido = true;
     }
   }
 
   if (valido) {
-    res.status(200);
-    res.send(
-      "Login realizado com sucesso. Seja bem vindo " + usuarioLogado.nome
-    );
+    res
+      .status(200)
+      .send(`Login realizado com sucesso! Bem vindo ${usuarioLogado.nome}`);
   } else {
-    res.status(400);
-    res.send("Verifique os dados e tente novamente");
+    res.status(400).send("Verifique os dados e tente novamente.");
   }
 });
 
 app.get("/recados", function (req, res) {
   if (valido) {
     for (const usuario of usuarios) {
-      for (let i = 0; i < usuario.recados.length; i++) {
-        usuario.recados[i].id = i;
-      }
+      numerarRecados();
       if (usuario.email == usuarioLogado.email) {
-        usuarioLogado = usuario;
         if (usuarioLogado.recados.length == 0) {
           res.status(400).send("Usuário ainda não tem registro de recados");
         } else {
+          usuarioLogado = usuario;
           res.status(200).send(usuario.recados);
         }
       }
@@ -130,7 +184,8 @@ app.post("/recados", function (req, res) {
             descricao: req.body.descricao,
           };
           usuario.recados.push(recado);
-          contadorRecados++;
+          numerarRecados();
+          usuarioLogado = usuario;
           res.status(200).send("Recados registrado");
         }
       }
@@ -142,24 +197,46 @@ app.post("/recados", function (req, res) {
 
 app.put("/recados", function (req, res) {
   if (valido) {
+    var idAtualizar = req.body.id;
+    var titulo = req.body.titulo;
+    var descricao = req.body.descricao;
+
     if (
-      req.body.id == "" ||
-      req.body.titulo == "" ||
-      req.body.descricao == ""
+      idAtualizar == "" ||
+      titulo == "" ||
+      descricao == "" ||
+      idAtualizar == undefined ||
+      titulo == undefined ||
+      descricao == undefined
     ) {
       res.status(400).send("Preencha os campos corretamente");
-    } else {
-      for (const usuario of usuarios) {
-        if (usuario.email == usuarioLogado.email) {
-          if (usuario.recados[req.body.id].id == req.body.id) {
-            usuario.recados[req.body.id].titulo = req.body.titulo;
-            usuario.recados[req.body.id].descricao = req.body.descricao;
-            usuarioLogado = usuario;
-            res.status(200).send("Recado atualizado com sucesso");
-            console.log(usuario.recados);
+    }
+
+    for (const usuario of usuarios) {
+      if (usuario.email == usuarioLogado.email) {
+        if (usuario.recados.length == 0) {
+          res.status(400).send("Usuário não possui recados registrados");
+        } else {
+          const recadoUpdate = usuario.recados.filter(
+            (recado) => recado.id == idAtualizar
+          );
+
+          if (recadoUpdate.length == 0) {
+            res
+              .status(400)
+              .send(
+                "Não existe nenhum recado registrado com esse ID. Porfavor digite um ID válido."
+              );
           } else {
-            console.log(usuario.recados);
-            res.status(400).send("Não existe nenhum recado com o ID inserido.");
+            recadoUpdate.titulo = titulo;
+            recadoUpdate.descricao = descricao;
+
+            usuario.recados[idAtualizar].titulo = recadoUpdate.titulo;
+            usuario.recados[idAtualizar].descricao = recadoUpdate.descricao;
+
+            numerarRecados();
+            usuarioLogado = usuario;
+            res.status(200).send("Recado atualizado com sucesso.");
           }
         }
       }
@@ -169,19 +246,43 @@ app.put("/recados", function (req, res) {
   }
 });
 
+//CORRIGIR ROTA RECADOS DELETE
 app.delete("/recados", function (req, res) {
   if (valido) {
-    let id = req.body.id;
+    const idRemover = req.body.id;
+    var idInvalido;
 
-    for (const usuario of usuarios) {
-      if (
-        usuario.email == usuarioLogado.email &&
-        usuario.recados.length !== 0
-      ) {
-        usuario.recados.splice(id, 1);
-        res.status(200).send("Recado deletado com sucesso");
-      } else {
-        res.status(400).send("Usuário não tem recados registrados.");
+    if (idRemover == "" || idRemover == undefined) {
+      res.status(400).send("Preencha os campos corretamente.");
+    } else {
+      for (const usuario of usuarios) {
+        if (usuario.email == usuarioLogado.email) {
+          const recadosAtualizados = usuario.recados.filter(
+            (recado) => recado.id != idRemover
+          );
+          const recadoApagado = usuario.recados.filter(
+            (recado) => recado.id == idRemover
+          );
+          usuario.recados = recadosAtualizados;
+          numerarRecados();
+          usuarioLogado = usuario;
+
+          if (usuario.recados.length == 0 && recadoApagado == 0) {
+            res.status(400).send("Usuário não possui recados para deletar");
+          } else if (recadoApagado.length == 0) {
+            res
+              .status(400)
+              .send(
+                "Não existe nenhum recado registrado com esse ID. Porfavor digite um ID válido."
+              );
+          } else {
+            res
+              .status(200)
+              .send(
+                `Recado "${recadoApagado[0].titulo}" foi deletado com sucesso`
+              );
+          }
+        }
       }
     }
   } else {
