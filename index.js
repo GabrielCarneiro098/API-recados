@@ -1,38 +1,7 @@
 "use strict";
 import express from "express";
-const usuarios = [
-  {
-    identificador: 0,
-    nome: "Teste 1",
-    email: "teste1@teste.com",
-    senha: "teste1",
-    recados: [
-      {
-        id: 0,
-        titulo: "Alo",
-        descricao: "Bom dia",
-      },
-      {
-        id: 1,
-        titulo: "Oi",
-        descricao: "Boa tarde",
-      },
-      {
-        id: 3,
-        titulo: "Hi",
-        descricao: "Boa noite",
-      },
-    ],
-  },
-  {
-    identificador: 1,
-    nome: "Teste 2",
-    email: "teste2@teste.com",
-    senha: "teste2",
-    recados: [],
-  },
-];
-var contador = 2;
+const usuarios = [];
+var contador = 0;
 var usuarioLogado;
 var valido = false;
 
