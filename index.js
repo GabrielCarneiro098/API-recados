@@ -53,7 +53,7 @@ app.post("/cadastro", function (req, res) {
   }
 });
 
-app.get("/login", function (req, res) {
+app.post("/login", function (req, res) {
   if (req.body.email == undefined || req.body.senha == undefined) {
     res.status(400).send("Preencha os campos corretamente.");
   }
