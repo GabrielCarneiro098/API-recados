@@ -1,5 +1,6 @@
 "use strict";
 import express from "express";
+import cors from "cors";
 const usuarios = [];
 var contador = 0;
 var usuarioLogado;
@@ -12,9 +13,11 @@ function numerarRecados() {
     }
   }
 }
+
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/", function (req, res) {
   res.status(200).send(`Bem vindo ao app!`);
