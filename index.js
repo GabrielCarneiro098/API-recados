@@ -57,6 +57,7 @@ app.post("/cadastro", function (req, res) {
 });
 
 app.post("/login", function (req, res) {
+  valido = false;
   if (req.body.email == undefined || req.body.senha == undefined) {
     res.status(400).send("Preencha os campos corretamente.");
   }
