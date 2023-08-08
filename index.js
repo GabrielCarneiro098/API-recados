@@ -1,8 +1,162 @@
 "use strict";
 import express from "express";
 import cors from "cors";
-const usuarios = [];
-var contador = 0;
+const usuarios = [
+  {
+    identificador: 0,
+    nome: "Gabriel",
+    email: "teste@teste",
+    senha: "teste",
+    recados: [
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+      {
+        id: 0,
+        titulo: "teste",
+        descricao: "teste",
+      },
+    ],
+  },
+];
+var contador = 1;
 var usuarioLogado;
 var valido = false;
 
@@ -84,6 +238,17 @@ app.post("/login", function (req, res) {
 });
 
 app.get("/recados", function (req, res) {
+  // mexer
+  const page = parseInt(req.query.page) || 1;
+  const perPage = parseInt(req.query.perPage) || 10; // Padrão para 10 recados por página
+
+  const startIndex = (page - 1) * perPage;
+  const endIndex = startIndex + perPage;
+
+  const paginatedRecados = usuarioLogado.recados.slice(startIndex, endIndex);
+  res.json(paginatedRecados);
+
+  //mexer
   if (valido) {
     for (const usuario of usuarios) {
       numerarRecados();
