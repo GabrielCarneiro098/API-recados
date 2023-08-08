@@ -123,36 +123,6 @@ const usuarios = [
         titulo: "teste",
         descricao: "teste",
       },
-      {
-        id: 0,
-        titulo: "teste",
-        descricao: "teste",
-      },
-      {
-        id: 0,
-        titulo: "teste",
-        descricao: "teste",
-      },
-      {
-        id: 0,
-        titulo: "teste",
-        descricao: "teste",
-      },
-      {
-        id: 0,
-        titulo: "teste",
-        descricao: "teste",
-      },
-      {
-        id: 0,
-        titulo: "teste",
-        descricao: "teste",
-      },
-      {
-        id: 0,
-        titulo: "teste",
-        descricao: "teste",
-      },
     ],
   },
 ];
@@ -229,9 +199,10 @@ app.post("/login", function (req, res) {
   }
 
   if (valido) {
-    res
-      .status(200)
-      .send(`Login realizado com sucesso! Bem vindo ${usuarioLogado.nome}`);
+    res.status(200).json({
+      menssagem: "Bem vindo!",
+      recados: usuarioLogado.recados,
+    });
   } else {
     res.status(400).send("Verifique os dados e tente novamente.");
   }
