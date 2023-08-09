@@ -197,11 +197,19 @@ app.post("/login", function (req, res) {
       valido = true;
     }
   }
+  numerarRecados();
+  const page = parseInt(req.query.page) || 1;
+  const perPage = parseInt(req.query.perPage) || 10; // Padrão para 10 recados por página
+
+  const startIndex = (page - 1) * perPage;
+  const endIndex = startIndex + perPage;
+
+  const paginatedRecados = usuarioLogado.recados.slice(startIndex, endIndex);
 
   if (valido) {
     res.status(200).json({
       menssagem: "Bem vindo!",
-      recados: usuarioLogado.recados,
+      paginatedRecados,
     });
   } else {
     res.status(400).send("Verifique os dados e tente novamente.");
