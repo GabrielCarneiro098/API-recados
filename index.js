@@ -197,14 +197,6 @@ app.post("/login", function (req, res) {
       valido = true;
     }
   }
-  const page = parseInt(req.query.page) || 1;
-  const perPage = parseInt(req.query.perPage) || 10; // Padrão para 10 recados por página
-
-  const startIndex = (page - 1) * perPage;
-  const endIndex = startIndex + perPage;
-
-  const paginatedRecados = usuarioLogado.recados.slice(startIndex, endIndex);
-  res.json(paginatedRecados);
 
   if (valido) {
     res.status(200).json({
