@@ -219,7 +219,7 @@ app.post("/login", function (req, res) {
 app.get("/recados", function (req, res) {
   // mexer
   const page = parseInt(req.query.page) || 1;
-  const perPage = parseInt(req.query.perPage) || 10; // Padrão para 10 recados por página
+  const perPage = parseInt(req.query.perPage) || 5;
 
   const startIndex = (page - 1) * perPage;
   const endIndex = startIndex + perPage;
