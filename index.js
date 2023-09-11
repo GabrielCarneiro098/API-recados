@@ -18,17 +18,143 @@ const usuarios = [
 
 const recados = [
   {
-    id: 0,
+    id: 1,
     nome: "Beltrano",
     titulo: "Reunião de equipe",
     descricao: "Lembre-se da reunião de equipe às 10h amanhã.",
   },
   {
-    id: 1,
+    id: 2,
     nome: "Ciclano",
     titulo: "Aniversário",
     descricao:
       "Hoje é o aniversário do nosso colega João. Não se esqueça de desejar a ele um feliz aniversário!",
+  },
+  {
+    id: 3,
+    nome: "Maria",
+    titulo: "Tarefa importante",
+    descricao:
+      "Por favor, lembre-se de concluir a tarefa importante até o final do dia.",
+  },
+  {
+    id: 4,
+    nome: "João",
+    titulo: "Lembrete de pagamento",
+    descricao: "Não se esqueça de pagar a conta de luz até o dia 20 deste mês.",
+  },
+  {
+    id: 5,
+    nome: "Ana",
+    titulo: "Novo projeto",
+    descricao:
+      "Vamos começar um novo projeto na próxima semana. Prepare-se para a reunião de planejamento.",
+  },
+  {
+    id: 6,
+    nome: "Pedro",
+    titulo: "Ideias para o evento",
+    descricao:
+      "Por favor, compartilhe suas ideias para o próximo evento da empresa na nossa plataforma de colaboração.",
+  },
+  {
+    id: 7,
+    nome: "Luiza",
+    titulo: "Atualização do sistema",
+    descricao:
+      "Haverá uma atualização do sistema no próximo domingo às 23h. Certifique-se de salvar seu trabalho.",
+  },
+  {
+    id: 8,
+    nome: "Lucas",
+    titulo: "Sugestões de melhorias",
+    descricao:
+      "Estamos abertos a sugestões de melhorias para o escritório. Envie suas ideias para a equipe de gerenciamento.",
+  },
+  {
+    id: 9,
+    nome: "Mariana",
+    titulo: "Aviso de ausência",
+    descricao:
+      "Estarei ausente durante esta semana devido a compromissos pessoais. Entre em contato com o João em caso de urgência.",
+  },
+  // 11 novos recados adicionados
+  {
+    id: 10,
+    nome: "Carlos",
+    titulo: "Reunião de departamento",
+    descricao:
+      "Haverá uma reunião do departamento de vendas na sexta-feira às 14h.",
+  },
+  {
+    id: 11,
+    nome: "Isabela",
+    titulo: "Atualização de software",
+    descricao:
+      "Uma nova versão do software estará disponível para download a partir de hoje.",
+  },
+  {
+    id: 12,
+    nome: "Rafael",
+    titulo: "Feedback do cliente",
+    descricao:
+      "Recebemos um feedback positivo de um cliente satisfeito. Ótimo trabalho, equipe!",
+  },
+  {
+    id: 13,
+    nome: "Sofia",
+    titulo: "Feriado",
+    descricao:
+      "Lembre-se de que segunda-feira é feriado. Aproveite seu dia de folga!",
+  },
+  {
+    id: 14,
+    nome: "Eduardo",
+    titulo: "Apresentação de vendas",
+    descricao:
+      "Preparação para a próxima apresentação de vendas na conferência.",
+  },
+  {
+    id: 15,
+    nome: "Patrícia",
+    titulo: "Mudança de horário",
+    descricao:
+      "A partir da próxima semana, nosso horário de expediente será das 9h às 18h.",
+  },
+  {
+    id: 16,
+    nome: "Anderson",
+    titulo: "Anúncio importante",
+    descricao:
+      "Fique atento para um anúncio importante que será feito pela diretoria em breve.",
+  },
+  {
+    id: 17,
+    nome: "Larissa",
+    titulo: "Atualização de política",
+    descricao:
+      "Houve uma atualização na política de uso de dispositivos móveis da empresa. Leia atentamente.",
+  },
+  {
+    id: 18,
+    nome: "Renato",
+    titulo: "Lembrete de treinamento",
+    descricao:
+      "O treinamento obrigatório será realizado na quarta-feira. Certifique-se de participar.",
+  },
+  {
+    id: 19,
+    nome: "Camila",
+    titulo: "Projeto de sustentabilidade",
+    descricao:
+      "Participe do projeto de sustentabilidade da empresa. Juntos, podemos fazer a diferença.",
+  },
+  {
+    id: 20,
+    nome: "Gustavo",
+    titulo: "Aniversário do chefe",
+    descricao:
+      "Hoje é o aniversário do nosso chefe. Não se esqueça de dar os parabéns!",
   },
 ];
 
