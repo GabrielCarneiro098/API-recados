@@ -158,8 +158,6 @@ const recados = [
   },
 ];
 
-const usuarioLogado = { identificador: "", nome: "" };
-
 function numerarRecados() {
   var numerador = 0;
 
@@ -219,16 +217,19 @@ app.post("/register", function (req, res) {
   const verificarMesmoEmail = usuarios.some(
     (usuario) => usuario.email === novoUsuario.email
   );
-
-  if (verificarMesmoEmail) {
-    res.status(400).send("Este email já está em uso. Tente outro.");
+  if (nome != "" && email != "" && senha != "") {
+    if (verificarMesmoEmail) {
+      res.status(400).send("Este email já está em uso. Tente outro.");
+    } else {
+      usuarios.push(novoUsuario);
+      res.status(200).send("Usuário registrado com sucesso");
+    }
   } else {
-    usuarios.push(novoUsuario);
-    res.status(200).send("Usuário registrado com sucesso");
+    res.status(400).send("Preencha todos os campos");
   }
 });
 
-app.get("/login", function (req, res) {
+app.post("/login", function (req, res) {
   const email = req.body.email;
   const senha = req.body.senha;
 
@@ -239,14 +240,11 @@ app.get("/login", function (req, res) {
   );
 
   if (validarUsuario) {
-    usuarios.forEach((usuario) => {
-      if (usuario.email === email && usuario.senha === senha) {
-        usuarioLogado.identificador = usuario.identificador;
-        usuarioLogado.nome = usuario.nome;
-      }
-    });
+    const index = usuarios.findIndex(
+      (usuario) => usuario.email === email && usuario.senha === senha
+    );
 
-    res.json(usuarioLogado);
+    res.json(usuarios[index]);
   } else {
     res
       .status(400)
